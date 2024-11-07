@@ -1,7 +1,9 @@
 package kireiko.dev.quark.core;
 
 import kireiko.dev.quark.core.api.AsyncScheduler;
+import kireiko.dev.quark.core.api.Logger;
 import kireiko.dev.quark.shield.ShieldBridge;
+import kireiko.dev.quark.shield.text.Check;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -15,16 +17,23 @@ public class Core extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             AsyncScheduler.run(() -> {
                 Message message = update.getMessage();
-                if (ShieldBridge.isSpam(message)) {
-                    this.delete(ShieldBridge.buildDeleteMessage(message));
+                Check result = ShieldBridge.check(message);
+                if (result.isSpam()) {
+                    this.delete(ShieldBridge.buildDeleteMessage(message), result, message);
                 }
             });
         }
     }
 
     @SneakyThrows
-    private void delete(DeleteMessage deleteMessage) {
+    private void delete(DeleteMessage deleteMessage, Check result, Message message) {
         this.execute(deleteMessage);
+        if (message.getFrom().getUserName() != null) {
+            Logger.punish(message.getFrom().getUserName()
+                            + " message deleted (type: "
+                            + result.getType() + ") ["
+                            + result.getDeviace() + "]");
+        }
     }
 
     @Override
