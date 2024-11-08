@@ -6,7 +6,7 @@
 
     <groupId>kireiko.dev.quark.shield</groupId>
     <artifactId>QuarkShield</artifactId>
-    <version>BETA 2.0</version>
+    <version>BETA 2.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

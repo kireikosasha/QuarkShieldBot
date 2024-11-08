@@ -27,8 +27,8 @@ public class AdInitials {
                     "реферальная программа", "торговля", "торговые сигналы",
                     "автоматическая торговля", "пригласить друзей", "профит",
                     "обучение", "урок", "криптовалюта", "доход", "ежедневный заработок",
-                    "кредит", "депозит", "снятие", "вложен", "ворк",
-                    "приглашение", "гарантия", "возможность", "консультация"
+                    "кредит", "депозит", "снятие", "вложен", "ворк", "трейд", "гайд",
+                    "приглашение", "гарантия", "возможность", "консультация", "продам"
     };
 
     public static int checkCount(String s) {
@@ -51,14 +51,15 @@ public class AdInitials {
         return count;
     }
 
-    public static boolean isScam(String s) {
+    public static int isScam(String s) {
+        int v = 0;
         for (String i : scam) {
             if (Decrypt.deleteRepeat(
                             s.toLowerCase()).contains(i)
                             || Decrypt.use(s.toLowerCase()).contains(i)
-                            || s.toLowerCase().contains(i)) return true;
+                            || s.toLowerCase().contains(i)) v++;
         }
-        return false;
+        return v;
     }
 }
 

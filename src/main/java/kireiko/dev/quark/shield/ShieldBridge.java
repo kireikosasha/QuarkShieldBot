@@ -31,9 +31,8 @@ public class ShieldBridge extends Logger {
                    SpamType.AD_BANNER,
                    MathBuilder.buildDeviance(percent));
         }
-        if (basic.length() > 25
-                        && AdInitials.checkCount(basic) > 0
-                        && AdInitials.isScam(basic)) {
+        if (basic.length() > 25 && (AdInitials.checkCount(basic) > 0
+                        && AdInitials.isScam(basic) > 0)) {
             return new
                             Check(
                             true,
@@ -41,6 +40,15 @@ public class ShieldBridge extends Logger {
                             MathBuilder.buildDeviance(
                                             (AdInitials.checkCount(basic)
                                             + AdInitials.checkCountryFlags(basic)) * 8));
+        }
+        if (basic.length() > 12 && AdInitials.isScam(basic) > 1) {
+            return new
+                            Check(
+                            true,
+                            SpamType.SCAM_GUIDE,
+                            MathBuilder.buildDeviance(
+                                            (AdInitials.checkCount(basic)
+                                                            + AdInitials.checkCountryFlags(basic)) * 8));
         }
         return new Check(false, null, null);
     }
