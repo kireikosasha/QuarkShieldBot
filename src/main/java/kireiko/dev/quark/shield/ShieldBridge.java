@@ -2,6 +2,7 @@ package kireiko.dev.quark.shield;
 
 import kireiko.dev.quark.core.api.Logger;
 import kireiko.dev.quark.shield.math.MathBuilder;
+import kireiko.dev.quark.shield.text.AdInitials;
 import kireiko.dev.quark.shield.text.Check;
 import kireiko.dev.quark.shield.text.Decrypt;
 import kireiko.dev.quark.shield.constant.SpamType;
@@ -18,6 +19,7 @@ public class ShieldBridge extends Logger {
         String format = Decrypt.use(basic);
         int deltaB2F = basic.length() - format.length();
         float percent = ((float) deltaB2F / basic.length()) * 100.0F;
+
         /*
         info("p: " + (int) percent + "%");
         info("Обычно: " + basic + " Форматировано: " + format);
@@ -28,6 +30,17 @@ public class ShieldBridge extends Logger {
                    true,
                    SpamType.AD_BANNER,
                    MathBuilder.buildDeviance(percent));
+        }
+        if (basic.length() > 25
+                        && AdInitials.checkCount(basic) > 0
+                        && AdInitials.isScam(basic)) {
+            return new
+                            Check(
+                            true,
+                            SpamType.SCAM,
+                            MathBuilder.buildDeviance(
+                                            (AdInitials.checkCount(basic)
+                                            + AdInitials.checkCountryFlags(basic)) * 8));
         }
         return new Check(false, null, null);
     }

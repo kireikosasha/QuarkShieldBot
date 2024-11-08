@@ -1,5 +1,5 @@
 package kireiko.dev.quark.shield.constant;
 
 public enum SpamType {
-    AD_BANNER
+    AD_BANNER, SCAM, ILLEGAL
 }
